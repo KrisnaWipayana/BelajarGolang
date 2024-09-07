@@ -1,0 +1,60 @@
+<html>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  
+    <style>
+        .container{
+            max-width: 500;
+        }
+    </style>
+    <body>
+        <div class="container mt-5">
+            <h3 style="text-align: center;">Tambah user</h3>
+            <br>
+        
+            <form action="/user/add" method="post">
+              <div class="form-group">
+              {{if .pesan}}
+                  <div class="alert alert-success">
+                      {{.pesan}}
+                  </div>
+              {{end}}
+              <label for="Role">Role</label>
+              <select name="role" id="" class="form-control {{if .validation.Role}} is-invalid {{end}}">
+                <option value="">Pilih role</option>
+                <option {{if eq .user.Role `1` }} selected {{end}} value="1">Leader</option>
+                <option {{if eq .user.Role `2` }} selected {{end}} value="2">Co-Leader</option>
+                <option {{if eq .user.Role `3` }} selected {{end}} value="3">Member</option>
+              </select>
+              <div class="invalid-feedback">
+                {{.validation.Role}}
+              </div>
+            </div>
+            <div class="form-group">
+                <label for="Nama">Nama</label>
+                <input name="nama" value="{{ .user.Nama }}" type="text" class="form-control {{if .validation.Nama}} is-invalid {{end}}" id="" placeholder="Masukkan nama disini">
+                <div class="invalid-feedback">
+                {{.validation.Nama}}
+              </div>
+            </div>
+            <div class="form-group">
+                <label for="Email">Email</label>
+                <input name="email" value="{{ .user.Email}}" type="email" class="form-control {{if .validation.Email}} is-invalid {{end}}" id="" placeholder="Masukkan email disini">
+                <div class="invalid-feedback">
+                    {{.validation.Email}}
+                  </div>
+            </div>
+            <div class="form-group">
+              <label for="Password">Password</label>
+              <input name="password" value="{{ .user.Password}}" type="password" class="form-control {{if .validation.Password}} is-invalid {{end}}" id="" placeholder="Masukkan password disini">
+              <div class="invalid-feedback">
+                  {{.validation.Password}}
+                </div>
+          </div>
+            <div class="form-group">
+                <a href="/user" class="btn btn-sm btn-primary">Lihat data</a>
+                <button type="submit" class="btn btn-sm btn-success">Tambah</button>
+            </div>
+          </form>
+        </div>
+    </body>
+</html>

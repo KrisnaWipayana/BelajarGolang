@@ -1,0 +1,61 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>User admin | Register</title>
+</head>
+    <style>
+        .container{
+            max-width: 500;
+        }
+    </style>
+    <body>
+        <div class="container mt-5">
+            <h3 style="text-align: center;">Register</h3>
+            <br>
+        
+            <form action="/register" method="post">
+             {{if .alert}}
+                <div class="alert alert-success">
+                {{.alert}}
+                </div>
+                <hr>
+            {{end}}
+
+            <input type="hidden" value="3" name="role">
+            <div class="form-group">
+                <label for="Nama">Masukkan Nama</label>
+                <input name="nama" value="{{ .user.Nama}}" type="text" class="form-control {{if .validate.Nama}} is-invalid {{end}}" id="" placeholder="Masukkan Nama disini" autocomplete="off">
+                <div class="invalid-feedback">
+                    {{.validate.Nama}}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email">Masukkan Email</label>
+                <input name="email" value="{{ .user.Email }}" type="text" class="form-control {{if .validate.Email}} is-invalid {{end}}" id="" placeholder="Masukkan Email disini" autocomplete="off">
+                <div class="invalid-feedback">
+                {{.validate.Email}}
+              </div>
+            </div>
+            <div class="form-group">
+                <label for="Password">Masukkan Password</label>
+                <input name="password" value="{{ .user.Password}}" type="password" class="form-control {{if .validate.Password}} is-invalid {{end}}" id="" placeholder="Masukkan Password disini" autocomplete="off">
+                <div class="invalid-feedback">
+                    {{.validate.Password}}
+                  </div>
+              </div>
+              <div class="form-group">
+                <label for="">Konfirmasi Password</label>
+                <input name="cpassword" value="{{ .user.Cpassword}}" type="password" class="form-control {{if .validate.Cpassword}} is-invalid {{end}}" id="" placeholder="Konfirmasi Password disini" autocomplete="off">
+                <div class="invalid-feedback">
+                    {{.validate.Cpassword}}
+                  </div>
+              </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-sm btn-success btn-block">Register</button>
+                <br>
+                <p>Sudah punya akun? <a href="/Login">Login</a></p>
+            </div>
+          </form>
+        </div>
+    </body>
+        </html>
