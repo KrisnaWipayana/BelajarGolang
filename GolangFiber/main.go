@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/KrisnaWipayana/BelajarGolang/GolangFiber/database"
 	"github.com/KrisnaWipayana/BelajarGolang/GolangFiber/database/migration"
 	"github.com/KrisnaWipayana/BelajarGolang/GolangFiber/route"
@@ -22,11 +24,17 @@ func main() {
 				"message-main": "error mengakses session",
 			})
 		}
-		defer sess.Save()
+
+		fmt.Println("Session ID sebelum disimpan:", sess.ID())
+		fmt.Println("Session data sebelum disimpan:", sess)
+
+		if err := sess.Save(); err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"message-main": "Gagal menyimpan session",
+			})
+		}
 		return c.Next()
 	})
-
-	// app.Use(middleware.AuthReq)
 
 	route.AppRoute(app) //direct ke package route, function AppRoute dgn parameter app
 	app.Listen(":3000") //server dijalanin di port 3000

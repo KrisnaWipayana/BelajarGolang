@@ -17,9 +17,8 @@ func AuthReq(c *fiber.Ctx) error {
 		})
 	}
 
-	// fmt.Println("Session data:", sess)
-
 	token := sess.Get("jwt")
+	fmt.Println("token: ", token)
 
 	if token == nil {
 		fmt.Println("session tidak ditemukan") //nyangkut disini

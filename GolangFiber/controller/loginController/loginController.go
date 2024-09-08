@@ -15,7 +15,6 @@ import (
 )
 
 func Login(c *fiber.Ctx) error {
-
 	var input req.LoginInput
 
 	if err := c.BodyParser(&input); err != nil {
@@ -24,7 +23,7 @@ func Login(c *fiber.Ctx) error {
 		})
 	}
 
-	//find email
+	// Find email
 	var user entities.User
 	if err := database.DB.Where("email = ?", input.Email).First(&user).Error; err != nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
@@ -32,7 +31,7 @@ func Login(c *fiber.Ctx) error {
 		})
 	}
 
-	//verif pw
+	// Verify password
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password)); err != nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"password": "gagal verif password",
@@ -40,13 +39,11 @@ func Login(c *fiber.Ctx) error {
 	}
 
 	token := jwt.New(jwt.SigningMethodHS256)
-
 	claim := token.Claims.(jwt.MapClaims)
-	claim["id"] = user.ID                                //mengambil id user
-	claim["email"] = user.Email                          //mengambil email user
-	claim["exp"] = time.Now().Add(time.Hour * 24).Unix() //mendapatkan berdurasi 24 jam
+	claim["id"] = user.ID
+	claim["email"] = user.Email
+	claim["exp"] = time.Now().Add(time.Hour * 24).Unix()
 
-	//membuat secrey key paling rahasia sejagat raya
 	t, err := token.SignedString([]byte("admin123"))
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -55,25 +52,27 @@ func Login(c *fiber.Ctx) error {
 	}
 
 	sess, err := session.Store.Get(c)
-
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": "gagal mengakses session",
 		})
 	}
 
+	// Set session data
 	sess.Set("jwt", t)
-	fmt.Println("Session sebelum disimpan:", sess.Get("jwt"))
+	fmt.Println("JWT sebelum disimpan:", t)
 
 	if err := sess.Save(); err != nil {
+		fmt.Println("Gagal menyimpan sesi:", err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "gagal menyimpan session",
+			"message": "Gagal menyimpan session",
 		})
 	}
 
+	fmt.Println("Session disimpan dengan token:", sess.Get("jwt"))
 	return c.JSON(fiber.Map{
-		"message":       "berhasil login anjay",
-		"token rahasia": t, // jika berhasil login maka mengembalikan pesan json beserta token
+		"message":       "berhasil login",
+		"token rahasia": t,
 	})
 }
 
