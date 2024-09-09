@@ -20,5 +20,5 @@ func ConnectDB() {
 	if err != nil {
 		panic("Database gagal terkoneksi")
 	}
-	fmt.Println("Terkoneksi ke database")
+	fmt.Println("Terkoneksi ke database...")
 }

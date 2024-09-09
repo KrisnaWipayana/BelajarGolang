@@ -19,7 +19,7 @@ func Login(c *fiber.Ctx) error {
 
 	if err := c.BodyParser(&input); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": "invalid input",
+			"input-error": "invalid input",
 		})
 	}
 
@@ -27,14 +27,14 @@ func Login(c *fiber.Ctx) error {
 	var user entities.User
 	if err := database.DB.Where("email = ?", input.Email).First(&user).Error; err != nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"email": "gagal find email",
+			"input-error": "gagal find email",
 		})
 	}
 
 	// Verify password
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password)); err != nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"password": "gagal verif password",
+			"login-controller-Login": "gagal verif password",
 		})
 	}
 
@@ -47,14 +47,14 @@ func Login(c *fiber.Ctx) error {
 	t, err := token.SignedString([]byte("admin123"))
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "gagal mendapat token rahasia :(",
+			"login-controller-Login": "gagal mendapat token rahasia :(",
 		})
 	}
 
 	sess, err := session.Store.Get(c)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "gagal mengakses session",
+			"login-controller-Login": "gagal mengakses session",
 		})
 	}
 
@@ -65,7 +65,7 @@ func Login(c *fiber.Ctx) error {
 	if err := sess.Save(); err != nil {
 		fmt.Println("Gagal menyimpan sesi:", err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "Gagal menyimpan session",
+			"login-controller-Login": "Gagal menyimpan session",
 		})
 	}
 
@@ -83,7 +83,7 @@ func Logout(c *fiber.Ctx) error {
 	c.ClearCookie("jwt") //clear cookie yang sudah tersambung sebelumnya
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"message": "berhasil logout, byebye",
+		"login-controller-Logout": "berhasil logout, byebye",
 	})
 }
 
@@ -97,8 +97,8 @@ func Register(c *fiber.Ctx) error {
 	validation := validator.New()
 	if err := validation.Struct(user); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": "Gagal registrasi",
-			"error":   err.Error(),
+			"login-controller-Register": "Gagal registrasi",
+			"error":                     err.Error(),
 		})
 	}
 
@@ -106,7 +106,7 @@ func Register(c *fiber.Ctx) error {
 	hashPw, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "gagal hash password",
+			"login-controller-Register": "gagal hash password",
 		})
 	}
 
@@ -117,11 +117,11 @@ func Register(c *fiber.Ctx) error {
 	}
 	if err := database.DB.Create(&newUser).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "Gagal registrasi user",
+			"login-controller-Register": "Gagal registrasi user",
 		})
 	}
 	return c.JSON(fiber.Map{
-		"message": "berhasil registrasi",
-		"data":    newUser,
+		"login-controller-Register": "berhasil registrasi",
+		"data":                      newUser,
 	})
 }

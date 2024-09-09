@@ -13,17 +13,18 @@ func AuthReq(c *fiber.Ctx) error {
 	sess, err := session.Store.Get(c)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "gagal mendapatkan session",
+			"auth": "gagal mendapatkan session",
 		})
 	}
 
 	token := sess.Get("jwt")
 	fmt.Println("token didapat : ", token)
+	fmt.Println("----------------------------------------------------------------------------")
 
 	if token == nil {
 		fmt.Println("session tidak ditemukan")
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"message": "session tidak ada, silahkan login",
+			"auth": "session tidak ada, silahkan login",
 		})
 	}
 	return c.Next()

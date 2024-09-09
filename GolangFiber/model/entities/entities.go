@@ -12,7 +12,7 @@ type User struct {
 type Kamar struct {
 	Id             uint       `gorm:"primaryKey" json:"idKamar"`
 	NamaKamar      string     `gorm:"type:varchar(100)" json:"namaKamar"`
-	Harga          float64    `gorm:"type:decimal(10,2)" json:"harga"` // Tambahkan harga
+	Harga          float64    `gorm:"type:decimal(10,2)" json:"harga"`
 	DeskripsiKamar string     `gorm:"type:longtext" json:"deskripsiKamar"`
 	Fotos          []Foto     `gorm:"foreignKey:KamarID" json:"fotos"`
 	NoKamars       []No_Kamar `gorm:"foreignKey:KamarID" json:"noKamars"`

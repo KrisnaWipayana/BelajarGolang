@@ -4,6 +4,7 @@ import (
 	"github.com/KrisnaWipayana/BelajarGolang/GolangFiber/controller/adminController"
 	"github.com/KrisnaWipayana/BelajarGolang/GolangFiber/controller/custController"
 	"github.com/KrisnaWipayana/BelajarGolang/GolangFiber/controller/loginController"
+	"github.com/KrisnaWipayana/BelajarGolang/GolangFiber/controller/staffController"
 	"github.com/KrisnaWipayana/BelajarGolang/GolangFiber/middleware"
 	"github.com/gofiber/fiber/v2"
 )
@@ -12,7 +13,8 @@ import (
 func AppRoute(c *fiber.App) {
 
 	//middleware group
-	auth := c.Group("/admin", middleware.AuthReq)
+	admin := c.Group("/admin", middleware.AuthReq)
+	staff := c.Group("/staff", middleware.AuthReq)
 	order := c.Group("/payment", middleware.AuthReq)
 
 	//Login route
@@ -25,12 +27,13 @@ func AppRoute(c *fiber.App) {
 	order.Get("/details", custController.Order)
 
 	//Admin route
-	auth.Get("/user", adminController.ShowUser)
-	auth.Get("/user/:id", adminController.GetUser)
-	auth.Post("/user", adminController.AddUser)
-	auth.Put("/user/:id", adminController.UpdateUser)
-	auth.Delete("/user", adminController.DeleteUser)
+	admin.Get("/user", adminController.ShowUser)
+	admin.Get("/user/:id", adminController.GetUser)
+	admin.Post("/user", adminController.AddUser)
+	admin.Put("/user/:id", adminController.UpdateUser)
+	admin.Delete("/user", adminController.DeleteUser)
 
 	//Staff route
-
+	staff.Get("/layanan", staffController.ShowLayanan)
+	staff.Get("/kamar", staffController.ShowKamar)
 }
