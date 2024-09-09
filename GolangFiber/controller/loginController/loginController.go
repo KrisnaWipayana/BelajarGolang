@@ -60,7 +60,7 @@ func Login(c *fiber.Ctx) error {
 
 	// Set session data
 	sess.Set("jwt", t)
-	fmt.Println("JWT sebelum disimpan:", t)
+	// fmt.Println("JWT sebelum disimpan:", t) -- sudah di test (DONE)
 
 	if err := sess.Save(); err != nil {
 		fmt.Println("Gagal menyimpan sesi:", err)
@@ -69,7 +69,9 @@ func Login(c *fiber.Ctx) error {
 		})
 	}
 
-	fmt.Println("Session disimpan dengan token:", sess.Get("jwt"))
+	// unsolved : tidak bisa memanggil token jwt
+	// fmt.Println("Session disimpan dengan token:", sess.Get("jwt"))
+
 	return c.JSON(fiber.Map{
 		"message":       "berhasil login",
 		"token rahasia": t,

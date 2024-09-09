@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/KrisnaWipayana/BelajarGolang/GolangFiber/database"
 	"github.com/KrisnaWipayana/BelajarGolang/GolangFiber/database/migration"
 	"github.com/KrisnaWipayana/BelajarGolang/GolangFiber/route"
@@ -25,8 +23,8 @@ func main() {
 			})
 		}
 
-		fmt.Println("Session ID sebelum disimpan:", sess.ID())
-		fmt.Println("Session data sebelum disimpan:", sess)
+		// fmt.Println("Session ID sebelum disimpan:", sess.ID()) -- sudah di test (DONE)
+		// fmt.Println("Session data sebelum disimpan:", sess) -- sudah di test (DONE)
 
 		if err := sess.Save(); err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
