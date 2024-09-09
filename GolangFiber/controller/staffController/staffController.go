@@ -32,7 +32,7 @@ func ShowLayanan(c *fiber.Ctx) error {
 	if err != nil {
 		log.Println(err)
 		return c.Status(500).JSON(fiber.Map{
-			"staff-controller" : "gagal mengambil data layanan"
+			"staff-controller": "gagal mengambil data layanan",
 		})
 	}
 	response := fiber.Map{
