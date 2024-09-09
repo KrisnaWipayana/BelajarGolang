@@ -42,6 +42,7 @@ func Login(c *fiber.Ctx) error {
 	claim := token.Claims.(jwt.MapClaims)
 	claim["id"] = user.ID
 	claim["email"] = user.Email
+	claim["role"] = user.Role
 	claim["exp"] = time.Now().Add(time.Hour * 24).Unix()
 
 	t, err := token.SignedString([]byte("admin123"))
@@ -60,6 +61,7 @@ func Login(c *fiber.Ctx) error {
 
 	// Set session data
 	sess.Set("jwt", t)
+	sess.Set("role", user.Role)
 	// fmt.Println("JWT sebelum disimpan:", t) -- sudah di test (DONE)
 
 	if err := sess.Save(); err != nil {
@@ -75,12 +77,14 @@ func Login(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{
 		"message":       "berhasil login",
 		"token rahasia": t,
+		"role":          claim["role"],
 	})
 }
 
 func Logout(c *fiber.Ctx) error {
 
 	c.ClearCookie("jwt") //clear cookie yang sudah tersambung sebelumnya
+	c.ClearCookie("role")
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"login-controller-Logout": "berhasil logout, byebye",

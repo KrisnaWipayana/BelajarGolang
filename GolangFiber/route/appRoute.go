@@ -13,9 +13,9 @@ import (
 func AppRoute(c *fiber.App) {
 
 	//middleware group
-	admin := c.Group("/admin", middleware.AuthReq)
-	staff := c.Group("/staff", middleware.AuthReq)
-	order := c.Group("/payment", middleware.AuthReq)
+	admin := c.Group("/admin", middleware.AuthReq(1))   //kategori role admin dijadiin nomor 1
+	staff := c.Group("/staff", middleware.AuthReq(2))   //kategori role staff dijadiin nomor 2
+	order := c.Group("/payment", middleware.AuthReq(3)) //kategori role member dijadiin nomor 3
 
 	//Login route
 	c.Post("/login", loginController.Login)
