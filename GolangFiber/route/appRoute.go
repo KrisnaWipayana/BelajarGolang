@@ -33,7 +33,17 @@ func AppRoute(c *fiber.App) {
 	admin.Put("/user/:id", adminController.UpdateUser)
 	admin.Delete("/user", adminController.DeleteUser)
 
-	//Staff route
-	staff.Get("/layanan", staffController.ShowLayanan)
+	//Staff route - kamar
 	staff.Get("/kamar", staffController.ShowKamar)
+	staff.Get("/kamar/:id", staffController.GetKamar)
+	staff.Post("/kamar", staffController.AddKamar)
+	staff.Put("/kamar/:id", staffController.UpdateKamar)
+	staff.Delete("/kamar/:id", staffController.DeleteKamar)
+
+	//Staff route - layanan
+	staff.Get("/layanan", staffController.ShowLayanan)
+	staff.Get("/layanan/:id", staffController.GetLayanan)
+	staff.Post("/layanan", staffController.AddLayanan)
+	staff.Put("/layanan/:id", staffController.UpdateLayanan)
+	staff.Delete("/layanan/:id", staffController.DeleteLayanan)
 }

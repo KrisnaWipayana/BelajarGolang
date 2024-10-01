@@ -41,11 +41,12 @@ func Login(c *fiber.Ctx) error {
 	token := jwt.New(jwt.SigningMethodHS256)
 	claim := token.Claims.(jwt.MapClaims)
 	claim["id"] = user.ID
+	claim["nama"] = user.Nama
 	claim["email"] = user.Email
 	claim["role"] = user.Role
 	claim["exp"] = time.Now().Add(time.Hour * 24).Unix()
 
-	t, err := token.SignedString([]byte("admin123"))
+	t, err := token.SignedString([]byte(user.Nama))
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"login-controller-Login": "gagal mendapat token rahasia :(",
@@ -83,8 +84,10 @@ func Login(c *fiber.Ctx) error {
 
 func Logout(c *fiber.Ctx) error {
 
-	c.ClearCookie("jwt") //clear cookie yang sudah tersambung sebelumnya
-	c.ClearCookie("role")
+	sess, _ := session.Store.Get(c)
+	sess.Destroy()
+	// c.ClearCookie("jwt") //clear cookie yang sudah tersambung sebelumnya
+	// c.ClearCookie("role")
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"login-controller-Logout": "berhasil logout, byebye",

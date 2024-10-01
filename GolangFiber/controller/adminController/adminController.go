@@ -91,7 +91,9 @@ func UpdateUser(c *fiber.Ctx) error {
 	id := c.Params("id")
 
 	if err := c.BodyParser(&user); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"message": err.Error()})
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": err.Error(),
+		})
 	}
 
 	if database.DB.Model(&user).Where("id = ?", id).Updates(&user).RowsAffected == 0 {
@@ -112,12 +114,16 @@ func DeleteUser(c *fiber.Ctx) error {
 	}
 
 	if err := c.BodyParser(&input); err != nil {
-		return c.Status(400).JSON(fiber.Map{"message": err.Error()})
+		return c.Status(400).JSON(fiber.Map{
+			"message": err.Error(),
+		})
 	}
 
 	id, err := input.Id.Int64()
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"message": "ID tidak valid"})
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "ID tidak valid",
+		})
 	}
 
 	if database.DB.Delete(&entities.User{}, id).RowsAffected == 0 {
